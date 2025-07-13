@@ -1,3 +1,5 @@
+import { createGuideListItemView } from "./guideListItemView.js";
+
 export function createMainView({ state, onSearch }) {
   const refs = {};
 
@@ -24,6 +26,12 @@ export function createMainView({ state, onSearch }) {
     if (value) onSearch(value);
   });
 
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      button.click(); // Trigger the search on Enter key for making it more user-friendly (tab or enter)
+    }
+  });
+
   root.append(input, button, loading, error, results);
 
   function update(newState) {
@@ -32,9 +40,8 @@ export function createMainView({ state, onSearch }) {
     refs.results.innerHTML = "";
     if (newState.results?.length) {
       newState.results.forEach((guide) => {
-        const item = document.createElement("div");
-        item.textContent = guide.title;
-        refs.results.appendChild(item);
+        const { root: item } = createGuideListItemView(guide);
+        results.appendChild(item);
       });
     }
   }

@@ -1,12 +1,18 @@
-export function loadApp() {
+import { loadPage } from "./util/loadPage.js";
+import { createMainPage } from "./pages/mainPage.js";
+import { getUserData } from "./util/getUserData.js";
+
+async function loadApp() {
+  const query = await getUserData();
+
   const state = {
-    query: "",
+    query,
     loading: false,
     error: null,
     results: [],
     selectedGuide: null,
   };
-
+  console.log("User device info:", query);
   loadPage(createMainPage, state);
 }
 
