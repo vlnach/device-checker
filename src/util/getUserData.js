@@ -5,8 +5,7 @@ export async function getUserData() {
   const isAndroid = ua.includes("android");
   const isIOS = ua.includes("iphone") || ua.includes("ipad");
 
-  let device = "device";
-  device = isMac
+  let device = isMac
     ? "macbook"
     : isWin
     ? "windows laptop"
@@ -17,19 +16,21 @@ export async function getUserData() {
     : "device";
 
   let batteryStatus = "";
+
   try {
-    if (navigator.getBattery) {
+    if ("getBattery" in navigator) {
       const battery = await navigator.getBattery();
       if (battery.level < 0.2 && !battery.charging) {
-        batteryStatus = " not charging";
+        batteryStatus = " (low battery)";
       }
+    } else {
+      batteryStatus = " (battery not supported)";
     }
-  } catch (_) {
-    console.warn(
-      "Battery API not supported or failed to retrieve battery status."
-    );
-    batteryStatus = " (battery status unavailable)";
+  } catch (error) {
+    console.warn("Battery API failed:", error);
+    batteryStatus = " (battery check failed)";
   }
+  getUserData().then(console.log);
 
-  return `${device}${batteryStatus}`.trim();
+  return `${device}${batteryStatus}`;
 }

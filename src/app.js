@@ -3,8 +3,6 @@ import { createMainPage } from "./pages/mainPage.js";
 import { getUserData } from "./util/getUserData.js";
 
 async function loadApp() {
-  const query = await getUserData();
-
   const state = {
     query,
     loading: false,
