@@ -17,20 +17,5 @@ export async function getUserData() {
 
   let batteryStatus = "";
 
-  try {
-    if ("getBattery" in navigator) {
-      const battery = await navigator.getBattery();
-      if (battery.level < 0.2 && !battery.charging) {
-        batteryStatus = " (low battery)";
-      }
-    } else {
-      batteryStatus = " (battery not supported)";
-    }
-  } catch (error) {
-    console.warn("Battery API failed:", error);
-    batteryStatus = " (battery check failed)";
-  }
-  getUserData().then(console.log);
-
   return `${device}${batteryStatus}`;
 }

@@ -1,8 +1,10 @@
 import { loadPage } from "./util/loadPage.js";
-import { createMainPage } from "./pages/mainPage.js";
+import { createDevicePage } from "./pages/devicePage.js";
 import { getUserData } from "./util/getUserData.js";
 
 async function loadApp() {
+  const query = await getUserData();
+
   const state = {
     query,
     loading: false,
@@ -10,8 +12,8 @@ async function loadApp() {
     results: [],
     selectedGuide: null,
   };
-  console.log("User device info:", query);
-  loadPage(createMainPage, state);
+
+  loadPage(createDevicePage, state);
 }
 
 window.addEventListener("load", loadApp);
