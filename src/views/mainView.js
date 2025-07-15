@@ -1,4 +1,5 @@
 import { createGuideListItemView } from "./guideListItemView.js";
+import { loader } from "../util/loader.js";
 
 export function createMainView({ state, onSearch }) {
   const refs = {};
@@ -16,10 +17,13 @@ export function createMainView({ state, onSearch }) {
   const input = el("input", { placeholder: "Enter device", ref: "input" });
   const button = el("button", { text: "Search", ref: "button" });
   const results = el("div", { ref: "results" });
-  const loading = el("div", { text: "Loading...", ref: "loading" });
+
+  const loading = loader(); // Create a loader element
+  refs.loading = loading;
+  loading.style.display = "none";
+
   const error = el("div", { ref: "error" });
   error.style.color = "red";
-  loading.style.display = "none";
 
   button.addEventListener("click", () => {
     const value = refs.input.value.trim();
@@ -28,21 +32,35 @@ export function createMainView({ state, onSearch }) {
 
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-      button.click(); // Trigger the search on Enter key for making it more user-friendly (tab or enter)
+      button.click();
     }
   });
 
   root.append(input, button, loading, error, results);
 
   function update(newState) {
-    refs.loading.style.display = newState.loading ? "block" : "none";
+    if (newState.loading) {
+      refs.loading.style.display = "flex";
+      refs.loading.classList.add("fadeInOut");
+    } else {
+      refs.loading.classList.remove("fadeInOut");
+      refs.loading.style.display = "none";
+    }
+
     refs.error.textContent = newState.error || "";
     refs.results.innerHTML = "";
+
     if (newState.results?.length) {
       newState.results.forEach((guide) => {
         const { root: item } = createGuideListItemView(guide);
         results.appendChild(item);
       });
+    }
+    if (newState.error === "not_found") {
+      refs.error.textContent =
+        "No results found. Please try a different query.";
+    } else if (typeof newState.error === "string") {
+      refs.error.textContent = newState.error;
     }
   }
 

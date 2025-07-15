@@ -5,18 +5,17 @@ export function createDeviceView() {
   root.className = "device-view";
 
   root.innerHTML = `
-    <h2>Analyzing your device…</h2>
-    <div class="loader" style="margin: 20px 0;"></div>
+    <h2>Checked your device</h2>
+    <div class="loader-container" style="margin: 20px 0;"></div>
     <p class="info" style="display: none;"></p>
-    <button disabled style="display: none;">Continue</button>
+    <button disabled style="display: none;">Help to check</button>
   `;
 
-  const loaderContainer = root.querySelector(".loader");
+  const loaderContainer = root.querySelector(".loader-container");
+  loaderContainer.appendChild(loader());
+
   const info = root.querySelector(".info");
   const button = root.querySelector("button");
-
-  const spinner = loader();
-  loaderContainer.appendChild(spinner);
 
   function setState({ loading = false, text = "" }) {
     loaderContainer.style.display = loading ? "block" : "none";

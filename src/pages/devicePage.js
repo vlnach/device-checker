@@ -9,8 +9,18 @@ export function createDevicePage(state, onContinue) {
   view.setState({ loading: true });
 
   getUserData().then((info) => {
+    const startTime = Date.now();
+    const elapsed = Date.now() - startTime;
+    const remaining = 3000 - elapsed;
+
     state.query = info;
-    view.setState({ loading: false, text: `Your device: ${info}` });
+
+    setTimeout(
+      () => {
+        view.setState({ loading: false, text: `Your device: ${info}` });
+      },
+      remaining > 0 ? remaining : 0
+    );
   });
 
   view.onContinue(() => {

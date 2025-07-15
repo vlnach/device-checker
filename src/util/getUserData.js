@@ -15,7 +15,5 @@ export async function getUserData() {
     ? "iphone"
     : "device";
 
-  let batteryStatus = "";
-
-  return `${device}${batteryStatus}`;
+  return `${device}`;
 }
