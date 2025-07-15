@@ -5,7 +5,8 @@ export function createDeviceView() {
   root.className = "device-view";
 
   root.innerHTML = `
-    <h2>Checked your device</h2>
+    <h2>Your used device. Checked & Verified.</h2>
+<p>This tool helps verify common issues and quality indicators of used laptops before purchase.</p>
     <div class="loader-container" style="margin: 20px 0;"></div>
     <p class="info" style="display: none;"></p>
     <button disabled style="display: none;">Help to check</button>
@@ -16,6 +17,15 @@ export function createDeviceView() {
 
   const info = root.querySelector(".info");
   const button = root.querySelector("button");
+
+  const about = document.createElement("div");
+  about.className = "about-section";
+  about.innerHTML = `
+  <p style="margin-top: 40px; font-size: 0.9rem; color: #555;">
+    This tool helps you verify the condition of second-hand laptops — fast, free, and browser-based. 
+    We guide you through the most common checks for your model.
+  </p>`;
+  root.appendChild(about);
 
   function setState({ loading = false, text = "" }) {
     loaderContainer.style.display = loading ? "block" : "none";
