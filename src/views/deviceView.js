@@ -1,30 +1,34 @@
+import { loader } from "../util/loader.js";
+
 export function createDeviceView() {
   const root = document.createElement("div");
   root.className = "device-view";
 
-  const title = document.createElement("h2");
-  title.textContent = "Analyzing your device…";
+  root.innerHTML = `
+    <h2>Analyzing your device…</h2>
+    <div class="loader" style="margin: 20px 0;"></div>
+    <p class="info" style="display: none;"></p>
+    <button disabled style="display: none;">Continue</button>
+  `;
 
-  const info = document.createElement("p");
-  info.textContent = "Detecting…";
+  const loaderContainer = root.querySelector(".loader");
+  const info = root.querySelector(".info");
+  const button = root.querySelector("button");
 
-  const button = document.createElement("button");
-  button.textContent = "Continue";
-  button.disabled = true;
+  const spinner = loader();
+  loaderContainer.appendChild(spinner);
 
-  root.append(title, info, button);
-
-  function setDeviceInfo(text) {
-    info.textContent = `Your device: ${text}`;
-  }
-
-  function enableButton() {
-    button.disabled = false;
+  function setState({ loading = false, text = "" }) {
+    loaderContainer.style.display = loading ? "block" : "none";
+    info.style.display = loading ? "none" : "block";
+    button.style.display = loading ? "none" : "inline-block";
+    button.disabled = loading;
+    info.textContent = text;
   }
 
   function onContinue(handler) {
     button.addEventListener("click", handler);
   }
 
-  return { root, setDeviceInfo, enableButton, onContinue };
+  return { root, setState, onContinue };
 }
