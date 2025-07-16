@@ -8,6 +8,7 @@ export function createDeviceView() {
     <h2>Your used device. Checked & Verified.</h2>
 <p>This tool helps verify common issues and quality indicators of used laptops before purchase.</p>
     <div class="loader-container" style="margin: 20px 0;"></div>
+    <p class="info" style="display: none;"></p>
     <button disabled style="display: none;">Help to check</button>
   `;
 
